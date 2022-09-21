@@ -49,3 +49,6 @@ git add .
 git commit -m 'update .gitignore'
 ```
 **这个只是提交到本地仓库，请放心修改**
+
+# electron相关问题
+## 
