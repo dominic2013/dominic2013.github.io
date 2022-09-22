@@ -51,4 +51,46 @@ git commit -m 'update .gitignore'
 **这个只是提交到本地仓库，请放心修改**
 
 # electron相关问题
-## 
+## 如何在vscode中对electron主进程进行调试
+*我用的electron-vue脚手架，但是其他的应该是差不多的*
+1. 启动electron时，添加调试端口，对应于electron-vue脚手架中是.electron-vue目录中的dev-runner.js中electron启动参数添加5858端口
+<https://www.electronjs.org/zh/docs/latest/tutorial/debugging-main-process#--inspectport>
+```
+  var args = [
+    '--inspect=5858',
+    path.join(__dirname, '../dist/electron/main.js')
+  ]
+```
+2. 配置vscode调试器
+<https://www.electronjs.org/zh/docs/latest/tutorial/debugging-vscode>
+项目根目录新建.vscode目录，在目录中新建launch.json文件，并粘贴如下代码：
+```
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Inspect Electron",
+            "port": 5858,
+            "sourceMaps": false,
+            "localRoot": "${workspaceRoot}",
+            "remoteRoot": null,
+            "address": "localhost"
+          }
+    ],
+    "compounds": [
+      {
+        "name": "Electron: All",
+        "configurations": ["Electron: Main", "Electron: Renderer"]
+      }
+    ]
+  }
+```
+3. 启动项目，启动调试器
+  + 启动项目
+  + 点击vscode左侧debug图标，左上角绿色小箭头右侧选中Inspect Electron，点击绿色箭头进行启动
+
+4. 添加断点进行调试
+
+*如果无法打断点，是一个白色圆圈，是因为不能直接在源码上加断点，而是需要在启动调试器之后，在vscode面板左下角找到断点，点击一下断点，找到右侧找到经过webpack转换之后的源码，需要在这个文件基础上进行调试*
