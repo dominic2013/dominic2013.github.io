@@ -94,3 +94,54 @@ git commit -m 'update .gitignore'
 4. 添加断点进行调试
 
 *如果无法打断点，是一个白色圆圈，是因为不能直接在源码上加断点，而是需要在启动调试器之后，在vscode面板左下角找到断点，点击一下断点，找到右侧找到经过webpack转换之后的源码，需要在这个文件基础上进行调试*
+
+## 如何在生产环境中对electron程序进行调试
+```
+/**
+ * 终端启动时使用远程端口
+ * xxx.exe --remote-debugging-port=9999
+ *
+ * 浏览器打开远程控制台
+ * http://localhost:9999/
+ *
+ * 介绍
+ * https://chromedevtools.github.io/devtools-protocol/
+ */
+```
+## 加载外部c++程序时，加载node-gyp生成的.node接口文件找不到文件的问题
+*electron-vue脚手架中配置webpack.main.config.js中的module*
+```
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'esbuild-loader'
+      },
+      {
+        test: /\.node$/,
+        //这个地方需要使用ext-loader，不然会报找不到文件
+        loader: 'native-ext-loader',
+        options: {
+          //basePath对应的是最终打包的js文件对应的目录，通过相对路径找到.node所在的目录
+          basePath: ['..','..','..','..','meeting/output/win/x64']
+        }
+      }
+    ]
+  }
+```
+引用.node文件的时候也是用相对路径
+```
+require('../../../../meeting/output/win/x64/wemeet_electron_sdk.node');
+```
+## electron中屏蔽快捷键如果快捷键中带有+号之类的冲突字符如何处理
+<https://www.electronjs.org/zh/docs/latest/tutorial/keyboard-shortcuts>
+<http://www.electronjs.org/zh/docs/latest/api/accelerator>
+
+*官网是使用+号连接组合，但是如果快捷键本身就带有+号就不行了*
+```
+      //屏蔽ctrl+shift+'+'号
+      globalShortcut.register(`ctrl+shift+Plus`, () => {
+        console.log('用户禁止放大')
+        return false;
+      })
+```
