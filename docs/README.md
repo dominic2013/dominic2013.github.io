@@ -287,7 +287,7 @@ See https://docs.npmjs.com/files/package.json#people-fields-author-contributors
 It is required to set Linux .deb package maintainer. Or you can set maintainer in the custom linux options.
 (see https://www.electron.build/configuration/linux).
 
-解决: package.json中 author需要填写名称加email的形式 南方财经全媒体集团,<179546959@qq.com>
+解决: package.json中 author需要填写名称加email的形式 xxx,<xxx@qq.com>
 
 
 
