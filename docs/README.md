@@ -145,3 +145,215 @@ require('../../../../meeting/output/win/x64/wemeet_electron_sdk.node');
         return false;
       })
 ```
+
+
+# 无法远程连接，首先需要安装sshd服务
+- apt install openssh-server
+- debian 开启SSH
+1、修改sshd_config文件，命令为：vi /etc/ssh/sshd_config 
+
+2、将#PasswordAuthentication no的注释去掉，并且将NO修改为YES  //我的kali中默认是yes
+
+3、将#PermitRootLogin yes的注释去掉 //我的kali中默认去掉了注释
+
+4、启动SSH服务，命令为：/etc/init.d/ssh start // 或者service ssh start
+
+5、验证SSH服务状态，命令为：/etc/init.d/ssh status
+
+6. 添加开机自启动   update-rc.d ssh enable
+7  重启ssh服务   service ssh restart
+
+
+# 安装nodejs
+[https://blog.csdn.net/lh155136/article/details/111194424]
+
+# 安装yarn
+`
+sudo apt remove cmdtest
+sudo apt remove yarn
+ 
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+ 
+sudo apt update
+sudo apt install yarn
+yarn -v
+yarn	
+`
+
+# 设置npm,yarn仓库源
+yarn config set registry https://registry.npm.taobao.org/
+
+# cross-env not found
+yarn global add cross-env
+
+# /home/rathboma/.cache/electron-builder/fpm/fpm-1.9.3-2.3.1-linux-x86/lib/ruby/bin/ruby: line 6: /home/rathboma/.cache/electron-builder/fpm/fpm-1.9.3-2.3.1-linux-x86/lib/ruby/bin.real/ruby: cannot execute binary file: Exec format error
+- apt-get install ruby-dev
+- gem sources --remove http://rubygems.org/
+- gem sources -a http://mirrors.aliyun.com/rubygems/
+- gem install fpm
+
+- 删除 $HOME/.cache/electron-builder/fpm/fpm-1.9.3-2.3.1-linux-x86/lib/ruby/bin.real/ruby 文件
+- ln -s /usr/bin/ruby $HOME/.cache/electron-builder/fpm/fpm-1.9.3-2.3.1-linux-x86/lib/ruby/bin.real/
+
+# 一直提示resources/app.asar" does not exist. Seems like a wrong configuration.  failedTask
+  出现这种情况，请检查electron-vue package.json中的build命令是否设置了build.json配置
+
+#  snapcraft is not installed, please: sudo snap install snapcraft --classic
+- apt install snapd
+- snap install snapcraft --classic
+
+# Mount snap "snapcraft" (8532) (snap "snapcraft" assumes unsupported features: snapd2.39 (try to update snapd and refresh the core snap))
+- 检查build.json中 linux的target为 deb 而不是空
+
+# /root/.cache/electron-builder/fpm/fpm-1.9.3-2.3.1-linux-x86/lib/ruby/lib/ruby/2.3.0/i686-linux/rbconfig.rb:9:in `<module:RbConfig>': ruby lib version (2.3.1) doesn't match executable version (2.5.5) (RuntimeError)
+- 利用rvm进行ruby的版本管理
+  `
+	gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+	curl -sSL https://get.rvm.io | bash -s stable
+	source ~/.bashrc
+	echo "ruby_url=https://cache.ruby-china.com/pub/ruby" > /usr/local/rvm/user/db
+	rvm pkg install openssl
+	rvm pkg install openssl
+	rvm reinstall 2.3.0 --with-openssl-dir=/usr/local/rvm/usr
+	## 删除原来的软链
+	rm /root/.cache/electron-builder/fpm/fpm-1.9.3-2.3.1-linux-x86/lib/ruby/bin.real
+	ln -s /usr/local/rvm/rubies/ruby-2.3.0/bin/ruby /root/.cache/electron-builder/fpm/fpm-1.9.3-2.3.1-linux-x86/lib/ruby/bin.real/
+  `
+
+# 安装rvm 报错 Error running 'requirements_debian_libs_install g++ bison libffi-dev libgdbm-dev libncurses5-dev libsqlite3-dev libyaml-dev zlib1g-dev libgmp-dev libreadline-dev libssl1.0-dev',please read /usr/local/rvm/log/1667961828_ruby-2.3.0/package_install_g++_bison_libffi-dev_libgdbm-dev_libncurses5-dev_libsqlite3-dev_libyaml-dev_zlib1g-dev_libgmp-dev_libreadline-dev_libssl1.0-dev.logRequirements installation failed with status: 100.
+- 
+  apt-get install rvm
+  apt-get install aptitude
+  aptitude install libssl-dev
+  
+# Error running 'requirements_debian_libs_install libssl1.0-dev' libssl1.0-dev 没有可安装候选，apt install openssl
+- 需要安装libssl1.0, 更新apt仓库数据源 
+  `
+  wget -O /etc/apt/sources.list https://repo.huaweicloud.com/repository/conf/Ubuntu-Ports-bionic.list
+  apt-get update
+  apt-cache policy libssl1.0-dev
+  rvm install ruby-2.3.1
+  `
+# 切换ruby版本
+ - rvm list
+ - rvm use ruby-2.3.1 --default
+# 2.3.0/rubygems/specification.rb:17:in `require': /root/.cache/electron-builder/fpm/fpm-1.9.3-2.3.1-linux-x86/lib/ruby/lib/ruby/2.3.0/i686-linux/stringio.so: wrong ELF class: ELFCLASS32 - /root/.cache/electron-builder/fpm/fpm-1.9.3-2.3.1-linux-x86/lib/ruby/lib/ruby/2.3.0/i686-linux/stringio.so (LoadError)
+
+# 直接使用build:dir命令编译绿色版本
+
+# linux中的抓包工具
+- 
+
+# 通过npm全局安装软件，执行时提示无法找到命令
+  - 任意目录执行 
+  `
+	echo -e "export PATH=$(npm prefix -g)/bin:$PATH" >> ~/.bashrc && source ~/.bashrc
+  `
+
+
+
+  
+
+
+
+设置author的时候，需要同时使用用户名加邮箱
+
+
+
+如何设置package编译linux
+
+
+cross-env: Permission denied
+npm rebuild
+npm run prd
+
+
+
+arm64/app-builder EACCES  failedTask=build stackTrace=Error: spawn
+需要先进行npm build进行编译
+
+
+
+
+
+• building        target=deb arch=arm64 file=build/sfc-connect_0.8.34_arm64.deb
+  ⨯ Please specify project homepage, see https://electron.build/configuration/configuration#Metadata-homepage
+
+Please specify author 'email' in the application package.json
+
+See https://docs.npmjs.com/files/package.json#people-fields-author-contributors
+
+It is required to set Linux .deb package maintainer. Or you can set maintainer in the custom linux options.
+(see https://www.electron.build/configuration/linux).
+
+解决: package.json中 author需要填写名称加email的形式 南方财经全媒体集团,<179546959@qq.com>
+
+
+
+⨯ Please specify project homepage, see https://electron.build/configuration/configuration#Metadata-homepage  failedTask=build stackTrace=Error: Please specify project homepage, see 
+
+解决： package.json设置homepage  "homepage": "https://sfconnect.sfccn.com",
+
+
+
+如何在windows10中虚拟ARM架构的UOS操作系统
+1.安装后无法上网的问题，需要安装tap-windows 虚拟网卡，通过桥接的形式，让虚拟机可以上网
+https://blog.csdn.net/u013250169/article/details/120002629
+
+# 如何查看全局安装的路径
+- npm config get prefix
+
+
+# 打包流程
+## 首先需要先把使用electron-builder进行打包
+  yarn:build:dir
+## 安装electron-packager (这一步是为了生成符合debian打包格式的文件目录规范)
+- npm install electron-packager -g
+- 做软链接 ln -s /usr/local/nodejs/bin/electron-packager /usr/bin/electron-packager
+   进入build/linux-arm64-unpacked/resources/app目录中执行 `electron-packager .` 会生成 sfc-connect-linux-arm64这个目录,这个是绿色版程序包
+## 安装 electron-installer-debian
+   npm install electron-installer-debian -g
+   ln -s /usr/local/nodejs/bin/electron-installer-debian  /usr/bin/electron-installer-debian
+
+## 打包为deb格式的包
+-  electron-installer-debian --src sfc-connect-linux-arm64/   --dest dist/installers/ --arch arm64
+   生成dist目录,d installers中可以找到deb格式的包
+
+# 统信操作系统无法定位安装包
+- https://blog.csdn.net/weixin_42328170/article/details/107411026
+  添加数据源，更新数据源
+  
+# libx11-dev : 依赖: libx11-6 (= 2:1.6.4-3ubuntu0.4) 但是 2:1.6.12-2 已安装
+- 出现这种情况，直接 apt-get install libx11-6=2:1.6.4-3ubuntu0.4
+
+# libx11-dev : 依赖: libxau-dev (>= 1:1.0.0-1) 但是它将不会被安装
+- 直接安装最新版 apt-get install libxau-dev
+
+# ./src/mouse.c:12:11: fatal error: X11/extensions/XTest.h: 没有那个文件或目录
+- apt-get install xorg-dev
+
+# 重装uos系统，一直卡在logo界面
+- 需要在启动的时候按e,然后在以linux开头的那一行命令最后添加 nomodeset,按f10保存启动
+
+# 统信商店如何按照规范进行打包
+- 首先我已经通过electron的打包工具打好了deb的包，可以先进行解压，把目录组织好再进行压缩
+  dpkg-deb -b orig xxx.deb<---压缩
+  dpkg-deb -R xxx.deb orig<--解压
+  
+# [6513:1125/170219.895373:FATAL:setuid_sandbox_host.cc(158)] The SUID sandbox helper binary was found, but is not configured correctly. Rather than run without sandboxing I'm aborting now. You need to make sure that /home/sfc-connect/sfc-connect-uos/build/linux-unpacked/chrome-sandbox is owned by root and has mode 4755.
+- 利用root用户给resource目录中的chrome-sandbox文件添加suid, chmod 4755 chrome-sandbox
+
+# uos系统待机后无法唤醒
+- 直接设置uos的电源选项为从不休眠，如果是ssh客户端断开，可以设置ssh的客户端休眠规则
+
+# 关于arm64架构下,electron18,node16 无法手动编译成功的问题(github issue: https://github.com/wilix-team/iohook/pull/363)
+- 下载官网的源码，通过npm run build会报错，网上找了一个分支可以正常的编译出来我要的版本
+  `
+    $ git clone https://github.com/ykhwong/iohook --branch=update-electron-v15
+	$ cd iohook
+	$ npm i --ignore-scripts
+	$ node build.js --runtime electron --version 18.0.1 --abi 103 --msvs_version=2022 --upload=false
+  `
+  
+
