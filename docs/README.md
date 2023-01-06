@@ -355,5 +355,27 @@ https://blog.csdn.net/u013250169/article/details/120002629
 	$ npm i --ignore-scripts
 	$ node build.js --runtime electron --version 18.0.1 --abi 103 --msvs_version=2022 --upload=false
   `
+# uiohook 如何在arm平台上生
+- 在uos arm64平台上无法正常运行uiohook，需要自己进行编译
+  `
+  cd node_modules/uiohook-napi/
+  yarn install
+  ## 如果执行后无法正常编译，可以强制执行编译
+  npm install --build-from-source
+  `
+# uiohook 在uos20上编译出错 libuiohook/src/x11/input_hook.c:43:10: fatal error: X11/extensions/Xrandr.h: 没有那个文件或目录
+- apt install libxrandr-dev
+
+# include <X11/extensions/record.h>
+- apt install libxtst-dev
+# fatal error: X11/Intrinsic.h X11/Intrinsic.h
+- apt-get install libxt-dev
+
+# 龙芯架构无法使用electron-builder，因为不支持龙芯架构，需要使用electron-packager进行打包
+- [http://docs.loongnix.cn/electron/doc/list/03.%E4%BD%BF%E7%94%A8electron-packager%E6%89%93%E5%8C%85%E7%A8%8B%E5%BA%8F.html]
+- export ELECTRON_MIRROR=http://ftp.loongnix.cn/electron/LoongArch/
+- npm config set registry https://registry.loongnix.cn:4873/
+- electron-packager . 
+
   
 
