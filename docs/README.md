@@ -147,6 +147,10 @@ require('../../../../meeting/output/win/x64/wemeet_electron_sdk.node');
 ```
 
 
+
+# uos 开启root权限，在系统设置中登录并进入开发者模式，修改root密码 
+- sudo passwd root
+
 # 无法远程连接，首先需要安装sshd服务
 - apt install openssh-server
 - debian 开启SSH
@@ -287,7 +291,7 @@ See https://docs.npmjs.com/files/package.json#people-fields-author-contributors
 It is required to set Linux .deb package maintainer. Or you can set maintainer in the custom linux options.
 (see https://www.electron.build/configuration/linux).
 
-解决: package.json中 author需要填写名称加email的形式 xxx,<xxx@qq.com>
+解决: package.json中 author需要填写名称加email的形式 南方财经全媒体集团,<179546959@qq.com>
 
 
 
@@ -311,7 +315,7 @@ https://blog.csdn.net/u013250169/article/details/120002629
 ## 安装electron-packager (这一步是为了生成符合debian打包格式的文件目录规范)
 - npm install electron-packager -g
 - 做软链接 ln -s /usr/local/nodejs/bin/electron-packager /usr/bin/electron-packager
-   进入build/linux-arm64-unpacked/resources/app目录中执行 `electron-packager .` 会生成 sfc-connect-linux-arm64这个目录,这个是绿色版程序包
+   进入build/linux-arm64-unpacked/resources/app目录中执行 `electron-packager . --ignore="src|build.*|server|rootLib|config|devTools"` 会生成 sfc-connect-linux-arm64这个目录,这个是绿色版程序包
 ## 安装 electron-installer-debian
    npm install electron-installer-debian -g
    ln -s /usr/local/nodejs/bin/electron-installer-debian  /usr/bin/electron-installer-debian
@@ -342,7 +346,7 @@ https://blog.csdn.net/u013250169/article/details/120002629
   dpkg-deb -R xxx.deb orig<--解压
   
 # [6513:1125/170219.895373:FATAL:setuid_sandbox_host.cc(158)] The SUID sandbox helper binary was found, but is not configured correctly. Rather than run without sandboxing I'm aborting now. You need to make sure that /home/sfc-connect/sfc-connect-uos/build/linux-unpacked/chrome-sandbox is owned by root and has mode 4755.
-- 利用root用户给resource目录中的chrome-sandbox文件添加suid, chmod 4755 chrome-sandbox
+- 利用root用户给打完包之后的根目录中的chrome-sandbox文件添加suid, chmod 4755 chrome-sandbox
 
 # uos系统待机后无法唤醒
 - 直接设置uos的电源选项为从不休眠，如果是ssh客户端断开，可以设置ssh的客户端休眠规则
@@ -350,11 +354,12 @@ https://blog.csdn.net/u013250169/article/details/120002629
 # 关于arm64架构下,electron18,node16 无法手动编译成功的问题(github issue: https://github.com/wilix-team/iohook/pull/363)
 - 下载官网的源码，通过npm run build会报错，网上找了一个分支可以正常的编译出来我要的版本
   `
-    $ git clone https://github.com/ykhwong/iohook --branch=update-electron-v15
+    $ git clone https://github.com/ykhwong/iohook --branch=update-electron-v15j
 	$ cd iohook
 	$ npm i --ignore-scripts
 	$ node build.js --runtime electron --version 18.0.1 --abi 103 --msvs_version=2022 --upload=false
   `
+
 # uiohook 如何在arm平台上生
 - 在uos arm64平台上无法正常运行uiohook，需要自己进行编译
   `
@@ -375,7 +380,11 @@ https://blog.csdn.net/u013250169/article/details/120002629
 - [http://docs.loongnix.cn/electron/doc/list/03.%E4%BD%BF%E7%94%A8electron-packager%E6%89%93%E5%8C%85%E7%A8%8B%E5%BA%8F.html]
 - export ELECTRON_MIRROR=http://ftp.loongnix.cn/electron/LoongArch/
 - npm config set registry https://registry.loongnix.cn:4873/
-- electron-packager . 
-
+- electron-packager . --ignore="src|build.*|server|rootLib|config|devTools"
+- 在进行安装时，去掉package.json中的esbuilder依赖，不然会报不支持loognarch的错误
+  
+# 统信商店打包步骤
+- 1 上传源码，安装依赖 yarn
+- 2 yarn install 
   
 
